@@ -37,14 +37,18 @@ struct Results solution(int N, int A[], int M)
             for (j=0; j<N; j++){
                 myResults.C[j]=max;
             }
+            printf("inLoop(%d) - ",max);
+            printArray();       
         }
         else{
-            printf("inLoop(%d) - ",max);
-            printArray();
+
             int temp = (myResults.C[A[i]-1])++;
+            //printf("temp - %d\n",temp);
             if (temp > max ){
                 max = temp;
             }
+            printf("inLoop(%d) - ",max);
+            printArray();       
         }
     }
     return myResults;
@@ -61,7 +65,7 @@ int main(int argc, char** argv) {
     memset(myResults.C,0,arraySize);
     myResults.L=N;
     
-    printC(myResults.C,myResults.L);
+    //printC(myResults.C,myResults.L);
     
     myResults = solution(N,A,M);
 
