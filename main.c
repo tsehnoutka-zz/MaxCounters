@@ -6,52 +6,69 @@ struct Results {
   int * C;
   int L; // Length of the array
 };
+struct Results myResults;
+
+void printC(int arr[], int n)
+{
+    printf("printC -" );
+   for (int i=0; i<n; i++)
+      printf("%d ", arr[i]);
+    printf("\n");
+}
+void printArray()
+{   
+    int i=0;
+    printf("(");
+    for (i=0; i<myResults.L; i++){
+        printf("%d, ",*(myResults.C + i) );
+    }
+    printf(")\n");
+}
 
 struct Results solution(int N, int A[], int M)
 {
-    int i=0;
+    int i=0,j=0;
     int max=0;
-    struct Results* myResults=(struct Results*)malloc(sizeof(struct Results));
-    int arraySize = sizeof(int)*M;
-    myResults.C = (int*)malloc(arraySize);
-    myResults.L = M;
+    int arraySize=sizeof (int) *N;
 
-    
     for (i=0; i<M; i++){
         if (A[i] == N+1){
-            memset(myResults.C,max,arraySize);
+            max++;
+            for (j=0; j<N; j++){
+                myResults.C[j]=max;
+            }
         }
-        else
-        {
-            int temp = (myResults.C + A[i])+1;
-            if (temp > max )
+        else{
+            printf("inLoop(%d) - ",max);
+            printArray();
+            int temp = (myResults.C[A[i]-1])++;
+            if (temp > max ){
                 max = temp;
+            }
         }
-       
     }
     return myResults;
 }
 
 
-/*
- * 
- */
 int main(int argc, char** argv) {
     int N=5;
-    int[] A = [3,4,4,6,1,4,4];
+    int A[7] = {3,4,4,6,1,4,4};
     int M = 7;
     int i=0;
+    int arraySize=sizeof (int) *N;
+    myResults.C = malloc(arraySize);
+    memset(myResults.C,0,arraySize);
+    myResults.L=N;
+    
+    printC(myResults.C,myResults.L);
+    
+    myResults = solution(N,A,M);
 
-    struct Results* myResults = solution(N,A,M);
-
-    printf("(");
-    for (i=0; i<M; i++){
-        printf("%d, ",*(myResults.C + i) );
-    }
-    printf(")\n");
+    printArray();
 
     free (myResults.C);
-    free (myResults);
+
     return 0;
 }
 
