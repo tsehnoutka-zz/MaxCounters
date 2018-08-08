@@ -32,7 +32,7 @@ struct Results {
   int * C;
   int L; // Length of the array
 };
-struct Results result;
+
 
 void printArray(int arr[], int n)
 {
@@ -45,20 +45,24 @@ void printArray(int arr[], int n)
 
 struct Results solution(int N, int A[], int M)
 {
+    struct Results result;
     int i=0,j=0;
     int max=0;
-
+    int *B;
+    B = (int *)calloc(N, sizeof(int));
+     
+    
     for (i=0; i<M; i++){
         if (A[i] == N+1){
             for (j=0; j<N; j++){
-                result.C[j]=max;
+                B[j]=max;
             }
             //printf("inLoop(%d) - ",max);
             //printArray(myResults.C,myResults.L);       
         }
         else{
-            result.C[A[i]-1] += 1;
-            int temp = result.C[A[i]-1];
+            B[A[i]-1] += 1;
+            int temp = B[A[i]-1];
             //printf("temp - %d\n",temp);
             if (temp > max ){
                 max = temp;
@@ -67,9 +71,11 @@ struct Results solution(int N, int A[], int M)
             //printArray(myResults.C,myResults.L);       
         }
     }
+    result.C=B;
+    result.L=N;
     return result;
 }
-int compareResults(struct test T){
+int compareResults(struct Results result, struct test T){
     int same=1;  // boolean: 0-false;  1-true
 /*    
     printf("Compare Results test array - ");
@@ -100,14 +106,10 @@ int main(int argc, char** argv)
     for (i=0; i< NumofTest; i++){
         printf("Running test - %d\n", i);
         arraySize=sizeof(int) * myTest[i].N;
-    
-        result.C = malloc(arraySize);
-        memset(result.C,0,arraySize);
-        result.L=myTest[i].N;  
         
-        result = solution(myTest[i].N,myTest[i].A,myTest[i].M);
+        struct Results result = solution(myTest[i].N,myTest[i].A,myTest[i].M);
          
-        if (compareResults(myTest[i])){
+        if (compareResults(result, myTest[i])){
             printf("PASS : ");
             printArray(myTest[i].r, myTest[i].N);
         }
