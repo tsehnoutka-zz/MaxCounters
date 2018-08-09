@@ -7,7 +7,7 @@ struct test{
     int* A; // array of operations
     int* r; // expected result
 };
-
+typedef enum { false, true } bool;
 #define  NumofTest 2
 struct test myTest[NumofTest];
 int tempA2[]={3, 5, 5, 1, 5};
@@ -48,25 +48,22 @@ struct Results solution(int N, int A[], int M)
     struct Results result;
     int i=0,j=0;
     int max=0;
+    int lastIncrease = 0;
     int *B;
     B = (int *)calloc(N, sizeof(int));
-     
-    
+
     for (i=0; i<M; i++){
+                if(A[i] > 0 && A[i] < N + 1) {
+            if (B[A[i] - 1] < lastIncrease) {
+                B[A[i] - 1] = lastIncrease;
+            }
+            B[A[i] - 1] ++;
+            if(max < B[A[i] - 1]) {
+                max = B[A[i] - 1];
+            }
         if (A[i] == N+1){
-            for (j=0; j<N; j++){
-                B[j]=max;
-            }
-            //printf("inLoop(%d) - ",max);
-            //printArray(myResults.C,myResults.L);       
+            lastIncrease = max;
         }
-        else{
-            B[A[i]-1] += 1;
-            int temp = B[A[i]-1];
-            //printf("temp - %d\n",temp);
-            if (temp > max ){
-                max = temp;
-            }
             //printf("inLoop(%d) - ",max);
             //printArray(myResults.C,myResults.L);       
         }
@@ -75,8 +72,8 @@ struct Results solution(int N, int A[], int M)
     result.L=N;
     return result;
 }
-int compareResults(struct Results result, struct test T){
-    int same=1;  // boolean: 0-false;  1-true
+bool compareResults(struct Results result, struct test T){
+    bool same=true;  // boolean: 0-false;  1-true
 /*    
     printf("Compare Results test array - ");
     printArray(T.r,T.N); 
@@ -84,16 +81,18 @@ int compareResults(struct Results result, struct test T){
     printArray(myResults.C,myResults.L);     
 */    
     if (result.L != T.N){
-        return !same;
+        same= false;
     }
-    int j =T.N-1;
-    while ((j>=0)&& same){
-        if (result.C[j] != T.r[j]){
-            same=0;
+    else{
+        int j =T.N-1;
+        while ((j>=0)&& same){
+            if (result.C[j] != T.r[j]){
+                same=false;
+            }
+            j--;
         }
-        j--;
     }
-    return same;
+    return true;
 }
 
 int main(int argc, char** argv) 
