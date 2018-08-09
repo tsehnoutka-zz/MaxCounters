@@ -1,4 +1,4 @@
 .dep.inc
 nbproject/
-build/Debug/Cygwin-Windows/main.o
-dist/Debug/Cygwin-Windows/maxcounters.exe
+build/*
+dist/*
