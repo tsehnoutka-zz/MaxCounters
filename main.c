@@ -46,14 +46,13 @@ void printArray(int arr[], int n)
 struct Results solution(int N, int A[], int M)
 {
     struct Results result;
-    int i=0,j=0;
-    int max=0;
-    int lastIncrease = 0;
+    
     int *B;
     B = (int *)calloc(N, sizeof(int));
-
-    for (i=0; i<M; i++){
-                if(A[i] > 0 && A[i] < N + 1) {
+    int max = 0;
+    int lastIncrease = 0;
+    for (int i = 0; i < M; i ++) {
+        if(A[i] > 0 && A[i] < N + 1) {
             if (B[A[i] - 1] < lastIncrease) {
                 B[A[i] - 1] = lastIncrease;
             }
@@ -61,15 +60,19 @@ struct Results solution(int N, int A[], int M)
             if(max < B[A[i] - 1]) {
                 max = B[A[i] - 1];
             }
-        if (A[i] == N+1){
+        }
+        if (A[i] == N + 1) {
             lastIncrease = max;
         }
-            //printf("inLoop(%d) - ",max);
-            //printArray(myResults.C,myResults.L);       
+    }
+    
+    for(int i = 0; i < N ; i ++) {
+        if(B[i] < lastIncrease) {
+            B[i] = lastIncrease;
         }
     }
-    result.C=B;
-    result.L=N;
+    result.C = B;
+    result.L = N;
     return result;
 }
 bool compareResults(struct Results result, struct test T){
